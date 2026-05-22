@@ -1,0 +1,9 @@
+#stm32 files
+Core/*
+!Core/Src/*.c
+!Core/Inc/*.h
+*.ld
+Debug/
+Binaries/
+.settings/
+*.launch
