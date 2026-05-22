@@ -1,0 +1,19 @@
+*
+!*/
+
+# Keep repo files
+!.gitignore
+!README.md
+
+#stm32 files
+!micromouse_stm32_logic/Core/
+!micromouse_stm32_logic/Core/Src/
+!micromouse_stm32_logic/Core/Inc/
+!micromouse_stm32_logic/Core/Src/*.c
+!micromouse_stm32_logic/Core/Inc/*.h
+!micromouse_stm32_logic/*.ioc
+
+#kicad files
+!micromouse_pcb/*.kicad_pro
+!micromouse_pcb/*.kicad_sch
+!micromouse_pcb/*.kicad_pcb
