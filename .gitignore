@@ -7,6 +7,7 @@
 
 #stm32 files
 !micromouse_stm32_logic/Core/
+micromouse_stm32_logic/Core/*
 !micromouse_stm32_logic/Core/Src/
 !micromouse_stm32_logic/Core/Inc/
 !micromouse_stm32_logic/Core/Src/*.c
