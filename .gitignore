@@ -3,6 +3,9 @@ Core/*
 !Core/Src/*.c
 !Core/Inc/*.h
 *.ld
+.project
+.cproject
+.mxproject
 Debug/
 Binaries/
 .settings/
