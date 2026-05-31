@@ -23,6 +23,7 @@
 /* USER CODE BEGIN Includes */
 #include "encoders.h"
 #include "motors.h"
+#include "controller.h"
 /* USER CODE END Includes */
 
 /* Private typedef -----------------------------------------------------------*/
@@ -115,15 +116,22 @@ int main(void)
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_3);
   HAL_TIM_PWM_Start(&htim1, TIM_CHANNEL_4);
 
-  HAL_GPIO_WritePin(GPIOC, DEBUG_LED_Pin, 1);
+//  uint32_t start = HAL_GetTick();
+  pivot_turn(1);
   /* USER CODE END 2 */
 
   /* Infinite loop */
   /* USER CODE BEGIN WHILE */
   while (1)
   {
+//	  uint32_t now = HAL_GetTick();
 	  left_counts = getLeftEncoderCounts();
 	  right_counts = getRightEncoderCounts();
+
+//	  if (now - start >= 100 ){
+//		  start = now;
+//		  HAL_GPIO_TogglePin(GPIOC, DEBUG_LED_Pin);
+//	  }
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */
@@ -267,7 +275,7 @@ static void MX_TIM1_Init(void)
   sConfigOC.OCMode = TIM_OCMODE_PWM1;
   sConfigOC.Pulse = 0;
   sConfigOC.OCPolarity = TIM_OCPOLARITY_HIGH;
-  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;
+  sConfigOC.OCNPolarity = TIM_OCNPOLARITY_HIGH;\
   sConfigOC.OCFastMode = TIM_OCFAST_DISABLE;
   sConfigOC.OCIdleState = TIM_OCIDLESTATE_RESET;
   sConfigOC.OCNIdleState = TIM_OCNIDLESTATE_RESET;
