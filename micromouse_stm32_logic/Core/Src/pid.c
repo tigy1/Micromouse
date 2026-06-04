@@ -13,6 +13,7 @@
 #define WHEEL_DIAMETER 32
 #define DISTANCE_TOL 15
 #define ANGLE_TOL 5
+#define CYCLE_GOAL 50
 //UNITS ARE IN MM
 
 uint8_t deriv_index = 0;
@@ -49,6 +50,11 @@ void resetPID() {
 	goal_count = 0;
 }
 
+//TODO:
+// 1. To fix both of these issues, you should limit the angleCorrection! Use the implementation of the limitPWM function in motors.c as inspiration for how to do this.
+// 2. Fix distance calculation
+// 3. Maybe add acceleration?
+
 void updatePID() {
 	/*
 	 * TIPS: Create kPw and kDw variables, use a variable to store the previous error for use in computing your
@@ -66,7 +72,8 @@ void updatePID() {
 	angle_history[deriv_index] = angle_diff;
 	float angle_correction = kPw * angle_diff + kDw * (angle_diff - old_angle_diff); //right now just use P
 
-	distance_diff = goal_distance - average(encoder_R, encoder_L);
+	int16_t curr_distance = average(encoder_R, encoder_L);
+	distance_diff = goal_distance - curr_distance;
 	float distance_correction = kPx * distance_diff + kDx * (distance_diff - old_distance_diff);
 	old_distance_diff = distance_diff;
 
@@ -81,7 +88,7 @@ void updatePID() {
 	//goal check
 	tester = abs(angle_diff);
 	if (tester <= ANGLE_TOL && fabs(distance_diff) <= DISTANCE_TOL){
-		if (goal_count < 50) {
+		if (goal_count < CYCLE_GOAL) {
 			goal_count++;
 		}
 	} else{
@@ -103,7 +110,7 @@ void setPIDGoalA(int16_t angle) {
 
 int8_t PIDdone(void) { // There is no bool type in C. True/False values are represented as 1 or 0.
 	//return true if rat reached goal for 50 systicks, else return false
-	if (goal_count >= 50){
+	if (goal_count >= CYCLE_GOAL){
 		return 1;
 	} else{
 		return 0;

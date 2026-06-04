@@ -5,8 +5,8 @@
 #ifndef INC_CONTROLLER_H_
 #define INC_CONTROLLER_H_
 
-#define PIVOT_TURN_GOAL 500
-#define MOVE_DISTANCE_GOAL 90
+#define PIVOT_TURN_GOAL 500 //amount of encoder counts for one wheel to turn 90 degrees x2
+#define MOVE_DISTANCE_GOAL 90 //amount of encoder counts to move one cell
 
 #include "main.h"
 

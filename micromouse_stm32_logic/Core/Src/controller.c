@@ -19,7 +19,14 @@ void move(int8_t n) {
 	 *
 	 * You should also call resetPID before exiting this function so your rat is ready for the next instruction.
 	 */
-
+	setPidGoalD(n * MOVE_DISTANCE_GOAL);
+	setPIDGoalA(0);
+	while(1){
+		if (PIDdone()){
+			resetPID();
+			break;
+		}
+	}
 }
 
 /*
