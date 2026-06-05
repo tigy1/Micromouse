@@ -19,7 +19,7 @@
 uint8_t deriv_index = 0;
 int16_t angle_history[DERIV_DELAY] = {0};
 
-float kPw = .1; //angle
+float kPw = 0.15; //angle
 float kDw = 0;
 
 float kPx = 0; //distance
@@ -67,7 +67,7 @@ void updatePID() {
 	int16_t encoder_R = getRightEncoderCounts();
 	int16_t encoder_L = getLeftEncoderCounts();
 
-	angle_diff = goal_angle - (encoder_R - encoder_L);
+	angle_diff = goal_angle - (encoder_R - encoder_L); //turning right is positive goal angle, left is negative goal angle
 	old_angle_diff = angle_history[deriv_index];
 	angle_history[deriv_index] = angle_diff;
 	float angle_correction = kPw * angle_diff + kDw * (angle_diff - old_angle_diff); //right now just use P
@@ -82,8 +82,8 @@ void updatePID() {
 		deriv_index = 0;
 	}
 
-	setMotorRPWM(limitPWM(distance_correction + angle_correction));
-	setMotorLPWM(limitPWM(distance_correction - angle_correction));
+	setMotorRPWM(distance_correction - angle_correction);
+	setMotorLPWM(distance_correction + angle_correction);
 
 	//goal check
 	tester = abs(angle_diff);

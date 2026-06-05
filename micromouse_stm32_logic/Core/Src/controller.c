@@ -36,7 +36,7 @@ void move(int8_t n) {
 void pivot_turn(int8_t n) {
 	//This function should set the distance and angle goals appropriately for PID
 	setPIDGoalD(0);
-	if ( n < 0 ){
+	if ( n > 0 ){
 		setPIDGoalA(PIVOT_TURN_GOAL);
 	} else{
 		setPIDGoalA(-1 * PIVOT_TURN_GOAL);
@@ -44,7 +44,7 @@ void pivot_turn(int8_t n) {
 
 	while (1){
 		if (PIDdone()){
-			resetPID();
+			//resetPID();
 			break;
 		}
 	}
