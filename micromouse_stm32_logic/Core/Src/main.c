@@ -126,6 +126,7 @@ int main(void)
   resetPID();
   pivot_turn(1);
   pivot_turn(-1);
+  move(1);
 
 
   /* USER CODE END 2 */

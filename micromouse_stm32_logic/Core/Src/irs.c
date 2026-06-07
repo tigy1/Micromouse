@@ -20,7 +20,38 @@ uint8_t complete = 0;
  */
 uint16_t readIR(IR ir)
 {
+	GPIO_TypeDef* PORT;
+	uint16_t PIN;
+    switch(ir)
+    {
+        case IR_LEFT:
+            PORT = Left_Emitter_GPIO_Port;
+            PIN = Left_Emitter_Pin;
+            break;
 
+        case IR_FRONT_LEFT:
+        	PORT = Front_Left_Emitter_GPIO_Port;
+        	PIN = Front_Left_Emitter_Pin;
+            break;
+
+        case IR_FRONT_RIGHT:
+        	PORT = Front_Right_Emitter_GPIO_Port;
+        	PIN = Front_Right_Emitter_Pin;
+            break;
+
+        case IR_RIGHT:
+        	PORT = Right_Emitter_GPIO_Port;
+        	PIN = Right_Emitter_Pin;
+            break;
+
+        default:
+            return 0;
+    }
+    HAL_GPIO_WritePin(PORT, PIN, GPIO_PIN_SET);
+	delayMicroseconds(20);
+	uint16_t res = analogRead(ir);
+	HAL_GPIO_WritePin(PORT, PIN, GPIO_PIN_RESET);
+	return res;
 }
 
 /*
@@ -29,23 +60,23 @@ uint16_t readIR(IR ir)
  */
 uint16_t readLeftIR(void)
 {
-
+	return readIR(IR_LEFT);
 }
 
 uint16_t readFrontLeftIR(void)
 {
-
+	return readIR(IR_FRONT_LEFT);
 }
 
 uint16_t readFrontRightIR(void)
 {
-
+	return readIR(IR_FRONT_RIGHT);
 }
 
 
 uint16_t readRightIR(void)
 {
-
+	return readIR(IR_RIGHT);
 }
 
 /*
@@ -62,16 +93,16 @@ uint16_t analogRead(IR ir)
     switch(ir)
     {
         case IR_LEFT:
-            sConfig.Channel = ADC_CHANNEL_15;
+            sConfig.Channel = ADC_CHANNEL_13;
             break;
         case IR_FRONT_LEFT:
-            sConfig.Channel = ADC_CHANNEL_6;
+            sConfig.Channel = ADC_CHANNEL_12;
             break;
         case IR_FRONT_RIGHT:
-            sConfig.Channel = ADC_CHANNEL_9;
+            sConfig.Channel = ADC_CHANNEL_11;
             break;
         case IR_RIGHT:
-            sConfig.Channel = ADC_CHANNEL_14;
+            sConfig.Channel = ADC_CHANNEL_10;
             break;
         default:
             return 0;
