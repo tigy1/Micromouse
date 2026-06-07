@@ -19,11 +19,11 @@
 uint8_t deriv_index = 0;
 int16_t angle_history[DERIV_DELAY] = {0};
 
-float kPw = 0.15; //angle
-float kDw = 0;
+float kPw = 0.2; //angle
+float kDw = 0.04;
 
-float kPx = 0; //distance
-float kDx = 0;
+float kPx = .1; //distance
+float kDx = 0.01;
 
 int16_t angle_diff = 0;
 float distance_diff = 0;
@@ -51,26 +51,24 @@ void resetPID() {
 }
 
 //TODO:
-// 1. To fix both of these issues, you should limit the angleCorrection! Use the implementation of the limitPWM function in motors.c as inspiration for how to do this.
-// 2. Fix distance calculation
-// 3. Maybe add acceleration?
+// 1. Maybe add acceleration?
 
 void updatePID() {
-	/*
-	 * TIPS: Create kPw and kDw variables, use a variable to store the previous error for use in computing your
-	 * derivative term. You may get better performance by having your kDw term average the previous handful of error values instead of the
-	 * immediately previous one, or using a stored error from 10-15 cycles ago (stored in an array?). This is because systick calls so frequently
-	 * that the error change may be very small and hard to operate on.
-	 */
-
 	//straight line
 	int16_t encoder_R = getRightEncoderCounts();
 	int16_t encoder_L = getLeftEncoderCounts();
 
-	angle_diff = goal_angle - (encoder_R - encoder_L); //turning right is positive goal angle, left is negative goal angle
+	angle_diff = goal_angle - (encoder_L - encoder_R); //turning right is positive goal angle, left is negative goal angle
 	old_angle_diff = angle_history[deriv_index];
 	angle_history[deriv_index] = angle_diff;
 	float angle_correction = kPw * angle_diff + kDw * (angle_diff - old_angle_diff); //right now just use P
+
+	//limit pwm of angle to half (.4), limitPWM does it by .8
+	if(angle_correction > 0.4){
+		angle_correction = 0.4;
+	} else if(angle_correction < -0.4){
+		angle_correction = -0.4;
+	}
 
 	int16_t curr_distance = average(encoder_R, encoder_L);
 	distance_diff = goal_distance - curr_distance;
@@ -82,8 +80,8 @@ void updatePID() {
 		deriv_index = 0;
 	}
 
-	setMotorRPWM(distance_correction - angle_correction);
-	setMotorLPWM(distance_correction + angle_correction);
+	setMotorRPWM(distance_correction + angle_correction);
+	setMotorLPWM(distance_correction - angle_correction);
 
 	//goal check
 	tester = abs(angle_diff);

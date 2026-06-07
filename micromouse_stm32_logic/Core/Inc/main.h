@@ -55,12 +55,28 @@ void HAL_TIM_MspPostInit(TIM_HandleTypeDef *htim);
 void Error_Handler(void);
 
 /* USER CODE BEGIN EFP */
-
+ADC_HandleTypeDef* Get_HADC1_Ptr(void);
 /* USER CODE END EFP */
 
 /* Private defines -----------------------------------------------------------*/
 #define DEBUG_LED_Pin GPIO_PIN_13
 #define DEBUG_LED_GPIO_Port GPIOC
+#define Right_Receiver_Pin GPIO_PIN_0
+#define Right_Receiver_GPIO_Port GPIOC
+#define Front_Right_Receiver_Pin GPIO_PIN_1
+#define Front_Right_Receiver_GPIO_Port GPIOC
+#define Front_Left_Receiver_Pin GPIO_PIN_2
+#define Front_Left_Receiver_GPIO_Port GPIOC
+#define Left_Receiver_Pin GPIO_PIN_3
+#define Left_Receiver_GPIO_Port GPIOC
+#define Front_Right_Emitter_Pin GPIO_PIN_0
+#define Front_Right_Emitter_GPIO_Port GPIOA
+#define Right_Emitter_Pin GPIO_PIN_1
+#define Right_Emitter_GPIO_Port GPIOA
+#define Front_Left_Emitter_Pin GPIO_PIN_2
+#define Front_Left_Emitter_GPIO_Port GPIOA
+#define Left_Emitter_Pin GPIO_PIN_3
+#define Left_Emitter_GPIO_Port GPIOA
 #define LeftEncoderCh1_Pin GPIO_PIN_6
 #define LeftEncoderCh1_GPIO_Port GPIOA
 #define LeftEncoderCh2_Pin GPIO_PIN_7
